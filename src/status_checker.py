@@ -1,4 +1,4 @@
-from api_key import EVERGREEN_API_KEY
+from evergreen_api_key import get_evergreen_api_key
 from url_builder import get_build_url, get_task_url
 
 import requests
@@ -10,7 +10,7 @@ class StatusChecker:
         '''`username` - user\'s JIRA username'''
         self.headers = {
             'Auth-Username': username,
-            'Api-Key': EVERGREEN_API_KEY,
+            'Api-Key': get_evergreen_api_key(),
         }
 
     def _make_request(self, url):
