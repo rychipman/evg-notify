@@ -27,19 +27,21 @@ class StatusChecker:
     def get_build_status(self, build_id):
         '''Checks the status of an Evergreen build. 
         
-           `build_id` - the ID of the build on Evergreen (i.e. the part of the URL after 
-           "evergreen.mongodb.com/build/")
+        `build_id` - the ID of the build on Evergreen (i.e. the part of the URL after 
+        "evergreen.mongodb.com/build/")
             
-           Returns the status string of the build, or `None` if the build can\'t be found.'''
+        Returns the status string of the build, or `None` if the build can\'t be found.
+        '''
         return self._make_request(get_build_url(build_id))
 
     def get_build_status(self, build_id):
         '''Checks the status of an Evergreen tasks.
            
-           `task_id` - the ID of the task on Evergreen (i.e. the part of the URL after 
-           "evergreen.mongodb.com/task/")
+        `task_id` - the ID of the task on Evergreen (i.e. the part of the URL after 
+        "evergreen.mongodb.com/task/")
             
-           Returns the status string of the task, or `None` if the task can\'t be found.'''
+        Returns the status string of the task, or `None` if the task can\'t be found.
+        '''
         return self._make_request(get_build_url(build_id))
 
 
