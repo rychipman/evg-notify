@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fork=true
+fork=false
 evg_notify_file=~/.evg-notify
 evg_notify_path=~/dev/evg-notify
 
@@ -10,9 +10,18 @@ if [[ "$1" != "patch-file" && "$1" != "patch" ]]; then
     exit $?
 fi
 
+
 # log the output of the evergreen command to a file
 # without changing the user's interaction with the cmd
-script -q "$evg_notify_file" evergreen $@
+script --version
+exit_code=$?
+if [ "$exit_code" = "0" ]; then
+    # Linux script
+    script -q -c "evergreen $@" "$evg_notify_file"
+else
+    # BSD script
+    script -q "$evg_notify_file" evergreen $@
+fi
 
 # get the patch ID from evergreen output
 patch_id=$(grep ID "$evg_notify_file" | awk '{print $3;}')
