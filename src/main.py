@@ -1,6 +1,6 @@
 from evergreen_requester import EvergreenRequester
 from mailer import Mailer
-from api_keys import SENDGRID_KEY
+from api_key import SENDGRID_API_KEY
 import argparse
 import time
 
