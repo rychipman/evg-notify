@@ -18,7 +18,7 @@ class Mailer:
         '''
         from_email = Email("evg-notify@mongodb.com")
         to_email = Email(to_email)
-        content = Content("text/plain", body)
+        content = Content("text/html", body)
         mail = Mail(from_email, subject, to_email, content)
         response = self.sg.client.mail.send.post(request_body=mail.get())
         response.status_code
