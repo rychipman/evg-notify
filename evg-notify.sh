@@ -11,14 +11,14 @@ if [[ "$1" != "patch-file" && "$1" != "patch" ]]; then
     exit $?
 fi
 
-
 # log the output of the evergreen command to a file
 # without changing the user's interaction with the cmd
 script --version > /dev/null 2>&1
 exit_code=$?
 if [ "$exit_code" = "0" ]; then
     # Linux script
-    script -q -c "$evergreen $@" "$evg_notify_file"
+    cmd="$evergreen $@"
+    script -q -c "$cmd" "$evg_notify_file"
     evg_exit_code=$?
 else
     # BSD script
