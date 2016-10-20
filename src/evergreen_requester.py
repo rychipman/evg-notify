@@ -1,4 +1,4 @@
-from evergreen_api_key import get_evergreen_api_key
+from evergreen_config import get_evergreen_config
 from url_builder import get_build_url, get_task_url, get_version_url
 
 import requests
@@ -6,13 +6,16 @@ import requests
 class EvergreenRequester:
     '''Makes requests to the Evergreen API to determine the status of various jobs.'''
 
-    def __init__(self, username):
+    def __init__(self):
         '''`username` - user\'s JIRA username'''
-        self.headers = {
-            'Auth-Username': username,
-            'Api-Key': get_evergreen_api_key(),
-        }
 
+        config = get_evergreen_config()
+
+        self.headers = {
+            'Auth-Username': config['user'],
+            'Api-Key': config['api_key'],
+        }
+        
     def _make_request(self, url):
         response = requests.get(url, headers=self.headers)
         return response.json()
