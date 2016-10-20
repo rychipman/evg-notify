@@ -68,3 +68,10 @@ class EvergreenRequester:
             'status': response_body.get('status'),
             'builds': response_body.get('builds'),
         }
+
+    def get_username(self):
+        '''Gets the current user's Evergreen username.
+
+        Returns the username as a string.
+        '''
+        return self.headers['Auth-Username']
