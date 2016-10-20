@@ -21,7 +21,7 @@ patch_id=$(grep ID "$evg_notify_file" | awk '{print $3;}')
 rm "$evg_notify_file"
 
 if [ "$fork" = "true" ]; then
-    nohup python $evg_notify_path/src/main.py $patch_id > /dev/null 2>&1 & disown
+    nohup python $evg_notify_path/src/main.py --patch $patch_id > /dev/null 2>&1 & disown
 else
-    python $evg_notify_path/src/main.py $patch_id
+    python $evg_notify_path/src/main.py --patch $patch_id
 fi
