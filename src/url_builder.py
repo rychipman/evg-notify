@@ -34,3 +34,13 @@ def get_task_url(task_id):
     '''
 
     return _get_url('tasks', task_id)
+
+def get_version_url(version_id):
+    '''
+    Generates the URL for the API endpoint of an Evergreen version.
+
+    `version` - the ID of the version on Evergreen (i.e. same as the patch ID)
+       
+    Returns the URL as a string.
+    '''
+    return _get_url('versions', version_id)
