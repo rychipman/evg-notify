@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fork=true
+fork=false
 evergreen=evergreen
 evg_notify_file=~/.evg-notify
 evg_notify_path=~/dev/evg-notify
