@@ -31,7 +31,7 @@ if [ "$evg_exit_code" != "0" ]; then
 fi
 
 # get the patch ID from evergreen output
-patch_id=$(grep ID "$evg_notify_file" | awk '{print $3;}')
+patch_id=$(grep ID "$evg_notify_file" | awk '{print $3}' | awk '{ sub(/\r/,""); print }')
 
 # remove the temporary file
 rm "$evg_notify_file"
