@@ -41,15 +41,25 @@ def main():
     if patch_status != None:
        print("Emailing {}@mongodb.com".format(username))
        build_statuses = {}
+       build_statuses_string = ""
        for build_id in patch_info['builds']:
            build_status = requester.get_build_status(build_id)
            if build_status != None:
                build_statuses[build_id] = build_status
+               build_statuses_string += "<b>{}</b>: {}<br>".format(
+                       build_id, build_status)
+       patch_description = requester.get_patch_description(patch_id)
+       if patch_description == None:
+           patch_description = patch_id
+       evergreen_link = 'https://evergreen.mongodb.com/version/{}'.format(
+               patch_id)
        to_email = '{}@mongodb.com'.format(username)
-       subject = 'Patch {} completed with status: {}'.format(patch_id, patch_status)
-       body = 'Hello {}, patch {} has finished running in evergreen with '\
-               'status {}. Please find the build statuses for this patch '\
-               'below:<br>{}'.format(username, patch_id, patch_status, str(build_statuses))
+       subject = '{}: {}'.format(patch_status, patch_description)
+       body = ('Hello {}, patch <b><a href=\"{}\">{}</a></b> has finished '
+               'running in evergreen with status={}. Please find the build '
+               'statuses for this patch below:<br><br>{}'.
+               format(username, evergreen_link, patch_description,
+                   patch_status,build_statuses_string))
        mailer = Mailer(SENDGRID_API_KEY)
        status = mailer.send(to_email, subject, body)
        print("Sendgrid Status Code: {}".format(status))
