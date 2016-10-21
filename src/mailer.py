@@ -21,6 +21,6 @@ class Mailer:
         content = Content("text/html", body)
         mail = Mail(from_email, subject, to_email, content)
         response = self.sg.client.mail.send.post(request_body=mail.get())
-        response.status_code
+        return response.status_code
         response.body
         response.headers

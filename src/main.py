@@ -4,14 +4,21 @@ from api_key import SENDGRID_API_KEY
 import argparse
 import time
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--patch', dest='patch_id', help='patch ID to monitor')
+    parser.add_argument('--notify', dest='notify', default='patch', help='granularity for email notifications')
     args = parser.parse_args()
+    return args
+
+def main():
+    args = parse_args()
     num_retries = 10
     patch_id = args.patch_id
     requester = EvergreenRequester()
     username = requester.get_username()
+
+    print("Start monitoring patch {} by {}".format(patch_id, username))
 
     # Query for patch status until we run out of retries or receive
     # success or failed. Reset retries if EvergreenRequester tells us the
@@ -19,6 +26,7 @@ def main():
     while (num_retries > 0):
         patch_info = requester.get_patch_status(patch_id)
         patch_status = patch_info['status']
+        print("Patch Status: {}".format(patch_status))
         if patch_status == 'success' or patch_status == 'failed':
             break
         elif patch_status != None:
@@ -27,8 +35,11 @@ def main():
             num_retries -= 1
         time.sleep(60)
 
+    print("Patch Completed! status={}".format(patch_status))
+
     # If patch successfully completed, retrieve the build IDs and send email.
     if patch_status != None:
+       print("Emailing {}@mongodb.com".format(username))
        build_statuses = {}
        for build_id in patch_info['builds']:
            build_status = requester.get_build_status(build_id)
@@ -39,7 +50,8 @@ def main():
        body = 'Hello {}, patch {} has finished running in evergreen with '\
                'status {}. Please find the build statuses for this patch '\
                'below:<br>{}'.format(username, patch_id, patch_status, str(build_statuses))
-       mailer = Mailer(SENDGRID_KEY)
-       mailer.send(to_email, subject, body)
+       mailer = Mailer(SENDGRID_API_KEY)
+       status = mailer.send(to_email, subject, body)
+       print("Sendgrid Status Code: {}".format(status))
 
 main()
